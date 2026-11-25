@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RutaSegura Niño | No viajes a ciegas</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:#0f172a;color:white;overflow-x:hidden}
+header{background:linear-gradient(135deg,#dc2626,#f59e0b,#dc2626);background-size:200% 200%;animation:grad 6s infinite;padding:50px 20px 80px;text-align:center}
+@keyframes grad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+header h1{font-size:44px;line-height:1.1}
+header p{margin-top:12px;font-size:18px;opacity:.95;max-width:650px;margin-left:auto;margin-right:auto}
+.badge{background:white;color:#dc2626;padding:6px 14px;border-radius:20px;font-weight:bold;font-size:13px;display:inline-block;margin-bottom:15px}
+.buscador{max-width:680px;margin:-35px auto 0;background:white;padding:8px;border-radius:50px;display:flex;box-shadow:0 15px 40px rgba(0,0,0,.5);position:relative;z-index:10}
+.buscador input{flex:1;border:none;outline:none;padding:14px 20px;font-size:16px;color:#111;border-radius:50px}
+.buscador button{background:#dc2626;color:white;border:none;padding:14px 24px;border-radius:50px;cursor:pointer;font-weight:bold;font-size:15px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:18px 20px}
+.chips button{background:#1e293b;border:1px solid #334155;color:white;padding:8px 16px;border-radius:20px;cursor:pointer}
+.chips button:hover{background:#dc2626}
+.container{max-width:1100px;margin:25px auto;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.card{background:#1e293b;border-radius:22px;overflow:hidden;border:1px solid #334155;cursor:pointer;transition:.2s}
+.card:hover{transform:translateY(-5px);border-color:#dc2626}
+.card-body{padding:20px}
+.rojo{background:#dc2626;color:white;font-size:12px;font-weight:bold;padding:6px 12px;border-radius:20px;display:inline-block}
+.amarillo{background:#f59e0b;color:black;font-size:12px;font-weight:bold;padding:6px 12px;border-radius:20px;display:inline-block}
+.verde{background:#22c55e;color:black;font-size:12px;font-weight:bold;padding:6px 12px;border-radius:20px;display:inline-block}
+.card-body h3{font-size:23px;margin:12px 0 8px}
+.card-body p{color:#cbd5e1;font-size:14px;line-height:1.6}
+.card-body b{color:white}
+.resultado{max-width:900px;margin:20px auto;background:#1e293b;border:2px solid #dc2626;border-radius:20px;padding:22px;display:none}
+.resultado h2{margin-bottom:8px}
+.resultado p{color:#e2e8f0;line-height:1.7;white-space:pre-line}
+.seccion{max-width:1100px;margin:40px auto;padding:0 20px}
+.seccion h2{font-size:28px;margin-bottom:15px;text-align:center}
+.pasos{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.paso{background:#1e293b;border-radius:20px;padding:20px;text-align:center;border:1px solid #334155}
+.paso span{font-size:35px}
+.paso h3{margin:10px 0 6px}
+.paso p{color:#94a3b8;font-size:14px;line-height:1.5}
+.telegram-box{max-width:900px;margin:30px auto;background:linear-gradient(135deg,#229ED9,#0ea5e9);border-radius:25px;padding:30px;text-align:center}
+.telegram-box h2{font-size:28px}
+.telegram-box p{margin:10px 0 20px;opacity:.95}
+.btn-tg{background:white;color:#0284c7;padding:15px 30px;border-radius:50px;text-decoration:none;font-weight:bold;display:inline-block;font-size:17px}
+.btn-no{background:rgba(255,255,255,.2);color:white;border:1px solid white;padding:12px 22px;border-radius:50px;cursor:pointer;font-weight:bold;margin-left:10px}
+.chat-demo{max-width:600px;margin:20px auto;background:#020617;border-radius:20px;overflow:hidden;border:1px solid #334155;display:none}
+.chat-head{background:#229ED9;padding:14px 18px;font-weight:bold}
+.chat-body{padding:18px;min-height:180px}
+.msg-bot{background:#1e293b;padding:12px 14px;border-radius:15px;margin-bottom:10px;line-height:1.6;font-size:14px;white-space:pre-line}
+.chat-input{display:flex;padding:10px;background:#0f172a;gap:8px}
+.chat-input input{flex:1;background:white;border:none;padding:12px;border-radius:20px;outline:none}
+.chat-input button{background:#229ED9;color:white;border:none;padding:12px 18px;border-radius:20px;cursor:pointer;font-weight:bold}
+footer{text-align:center;color:#64748b;padding:30px 20px;font-size:13px;line-height:1.6}
+@media(max-width:600px){header h1{font-size:32px}.btn-no{margin-left:0;margin-top:10px;display:inline-block}}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="badge">⚡ EN VIVO • CAJAMARCA & PIURA</span>
+  <h1>🚨 RutaSegura Niño</h1>
+  <p>No viajes a ciegas. Escribe tu provincia y descubre si tu ruta está <b>BLOQUEADA, en PRECAUCIÓN o TRANSITABLE</b> en tiempo real.</p>
+</header>
+
+<form class="buscador" onsubmit="buscar(event)">
+  <input id="q" type="text" placeholder="Escribe: Piura, Cutervo, Catacaos, Chota...">
+  <button>Ver Alerta 🔍</button>
+</form>
+
+<div class="chips">
+  <button onclick="setQ('Piura')">Piura</button>
+  <button onclick="setQ('Catacaos')">Catacaos</button>
+  <button onclick="setQ('Castilla')">Castilla</button>
+  <button onclick="setQ('Cutervo')">Cutervo</button>
+  <button onclick="setQ('Chota')">Chota</button>
+  <button onclick="setQ('Jaén')">Jaén</button>
+  <button onclick="setQ('San Miguel')">San Miguel</button>
+  <button onclick="setQ('Huancabamba')">Huancabamba</button>
+  <button onclick="setQ('Ayabaca')">Ayabaca</button>
+</div>
+
+<div id="res" class="resultado"><h2 id="res-titulo"></h2><p id="res-texto"></p></div>
+
+<div class="container">
+  <div class="card" onclick="setQ('Cutervo')"><div class="card-body"><span class="rojo">🔴 BLOQUEADO</span><h3>Cutervo - Chiple</h3><p><b>Crecida del río Callayuc</b> colapsó la plataforma.<br><b>Ruta alterna:</b> Cutervo - Socota - San Andrés<br>👆 Haz clic para ver alerta en vivo</p></div></div>
+  <div class="card" onclick="setQ('Piura')"><div class="card-body"><span class="rojo">🔴 ALERTA ROJA</span><h3>Piura - Castilla - Catacaos</h3><p><b>Crecida del río Piura y aniegos urbanos.</b><br><b>Ruta alterna:</b> Pasos elevados autorizados<br>👆 Haz clic para ver alerta en vivo</p></div></div>
+  <div class="card" onclick="setQ('San Miguel')"><div class="card-body"><span class="amarillo">🟡 PRECAUCIÓN</span><h3>San Miguel - Los Ajos</h3><p>Deslizamiento de más de 100m. Paso restringido.<br><b>Ruta alterna:</b> San Miguel - Kuntur Wasi</p></div></div>
+  <div class="card" onclick="setQ('Chota')"><div class="card-body"><span class="amarillo">🟡 PRECAUCIÓN</span><h3>Chota</h3><p>Lluvias intensas y deslizamientos leves.<br><b>Ruta alterna:</b> Chota - Bambamarca</p></div></div>
+  <div class="card" onclick="setQ('Jaén')"><div class="card-body"><span class="verde">🟢 TRANSITABLE</span><h3>Jaén</h3><p>Vía transitable con precaución por lluvias leves.<br><b>Tip:</b> Viajar de día.</p></div></div>
+  <div class="card" onclick="setQ('Huancabamba')"><div class="card-body"><span class="rojo">🔴 BLOQUEADO</span><h3>Huancabamba - Ayabaca</h3><p>Deslizamientos y vías bloqueadas.<br><b>Tip:</b> No viajar de noche.</p></div></div>
+</div>
+
+<div class="seccion">
+  <h2>¿Cómo funciona? 🤔</h2>
+  <div class="pasos">
+    <div class="paso"><span>1️⃣</span><h3>Escribe tu zona</h3><p>Piura, Cutervo, Chota, lo que sea. Arriba en el buscador.</p></div>
+    <div class="paso"><span>🌦️</span><h3>Clima en vivo</h3><p>Consultamos Open-Meteo en tiempo real: temperatura, lluvia y viento.</p></div>
+    <div class="paso"><span>🚨</span><h3>Te damos la alerta</h3><p>BLOQUEADO, PRECAUCIÓN o TRANSITABLE + ruta alterna + mapa de refugio.</p></div>
+    <div class="paso"><span>💬</span><h3>Llévalo a Telegram</h3><p>El mismo bot en tu bolsillo, sin abrir la web.</p></div>
+  </div>
+</div>
+
+<div class="telegram-box">
+  <h2>💬 Lleva RutaSegura a tu bolsillo</h2>
+  <p>El mismo bot que viste acá, pero en Telegram, 24/7, sin internet pesado.</p>
+  <a class="btn-tg" href="https://t.me/Ruta_Segura_Cajamarca_Prueba_bot" target="_blank">Abrir Bot en Telegram ↗</a>
+  <button class="btn-no" onclick="mostrarChat()">No tengo Telegram 😅</button>
+  <p style="font-size:13px;margin-top:15px;opacity:.85">Si no tienes Telegram, usa el chat de abajo, es el mismo bot.</p>
+</div>
+
+<div id="chat" class="chat-demo">
+  <div class="chat-head">🤖 RutaSegura Niño - Demo sin Telegram</div>
+  <div class="chat-body" id="chat-body"><div class="msg-bot">👋 Hola! Soy RutaSegura. Escríbeme tu zona abajo, por ejemplo: Piura</div></div>
+  <form class="chat-input" onsubmit="chatEnviar(event)"><input id="chat-q" placeholder="Escribe: Piura, Cutervo..."><button>Enviar</button></form>
+</div>
+
+<footer>Proyecto: Asistente Virtual Inteligente - Cajamarca & Piura<br>Flask + Python + Telebot + Open-Meteo (Tiempo Real)<br>Hecho para que nadie viaje a ciegas en Fenómeno El Niño.</footer>
+
+<script>
+const DATOS = {
+  "piura": {nombre:"Piura", lat:-5.19449, lon:-80.63282, alerta:"Crecida del río Piura y aniegos urbanos. Aléjate de riberas y zonas bajas. Usa pasos elevados autorizados."},
+  "castilla": {nombre:"Castilla - Piura", lat:-5.1985, lon:-80.615, alerta:"Anegamiento por desborde del río Piura. Calles inundadas, evacuar a zonas altas."},
+  "catacaos": {nombre:"Catacaos - Piura", lat:-5.2668, lon:-80.6718, alerta:"Inundación por crecida del río Piura. Vías bloqueadas. Ruta alterna: Evacuación a Piura centro."},
+  "cutervo": {nombre:"Cutervo - Chiple", lat:-6.3814, lon:-78.8189, alerta:"Crecida del río Callayuc colapsó la plataforma. Ruta alterna: Cutervo - Socota - San Andrés"},
+  "chiple": {nombre:"Cutervo - Chiple", lat:-6.3814, lon:-78.8189, alerta:"Crecida del río Callayuc colapsó la plataforma. Ruta alterna: Cutervo - Socota - San Andrés"},
+  "chota": {nombre:"Chota", lat:-6.5574, lon:-78.6536, alerta:"Lluvias intensas y deslizamientos leves. Ruta alterna: Chota - Bambamarca"},
+  "jaen": {nombre:"Jaén", lat:-5.7089, lon:-78.8075, alerta:"Vía transitable con precaución por lluvias leves."},
+  "jaén": {nombre:"Jaén", lat:-5.7089, lon:-78.8075, alerta:"Vía transitable con precaución por lluvias leves."},
+  "san miguel": {nombre:"San Miguel - Los Ajos", lat:-6.9972, lon:-78.8658, alerta:"Deslizamiento de más de 100m en Los Ajos. Ruta alterna: San Miguel - Kuntur Wasi"},
+  "cajamarca": {nombre:"Cajamarca", lat:-7.16378, lon:-78.50027, alerta:"Lluvias persistentes. Transitable con precaución."},
+  "huancabamba": {nombre:"Huancabamba", lat:-5.2427, lon:-79.4475, alerta:"Deslizamientos y vías bloqueadas. No viajar de noche."},
+  "ayabaca": {nombre:"Ayabaca", lat:-4.6386, lon:-79.7123, alerta:"Lluvias y neblina intensa. Transitable solo de día."},
+};
+function setQ(v){document.getElementById('q').value=v; buscar(null, v);}
+async function buscar(e, valor){
+  if(e) e.preventDefault();
+  let texto = (valor || document.getElementById('q').value).toLowerCase().trim();
+  let clave = Object.keys(DATOS).find(k=>texto.includes(k));
+  let box = document.getElementById('res');
+  if(!clave){box.style.display='block';document.getElementById('res-titulo').innerText='❓ No encontré esa zona';document.getElementById('res-texto').innerText='Prueba con: Piura, Castilla, Catacaos, Cutervo, Chota, Jaén, San Miguel, Cajamarca, Huancabamba, Ayabaca';return;}
+  let d = DATOS[clave];
+  document.getElementById('res-titulo').innerText='⏳ Consultando clima en vivo de '+d.nombre+'...';
+  document.getElementById('res-texto').innerText='';
+  box.style.display='block';
+  box.scrollIntoView({behavior:'smooth'});
+  try{
+    let r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${d.lat}&longitude=${d.lon}&current=temperature_2m,precipitation,weather_code,wind_speed_10m&timezone=auto`);
+    let j = await r.json(); let c=j.current;
+    let desc = c.weather_code>=51?'lluvia':c.weather_code>=95?'tormenta':'despejado';
+    let estado = (desc=='lluvia'||desc=='tormenta'||c.precipitation>2)?'🔴 BLOQUEADO - ALERTA ROJA':(c.precipitation>0?'⚠️ PRECAUCIÓN - ALERTA AMARILLA':'🟢 TRANSITABLE');
+    document.getElementById('res-titulo').innerText=estado+' - '+d.nombre;
+    document.getElementById('res-texto').innerText=`🌦️ Clima ahora: ${desc}\n🌡️ Temp: ${c.temperature_2m}°C\n🌧️ Lluvia: ${c.precipitation} mm\n💨 Viento: ${c.wind_speed_10m} km/h\n\n🚨 Alerta: ${d.alerta}\n\n📍 Mapa refugio: https://www.google.com/maps?q=${d.lat},${d.lon}`;
+  }catch(err){document.getElementById('res-titulo').innerText='📍 '+d.nombre;document.getElementById('res-texto').innerText='🚨 Alerta: '+d.alerta+'\n(No pude cargar clima en vivo, revisa tu internet)';}
+}
+function mostrarChat(){let c=document.getElementById('chat');c.style.display='block';c.scrollIntoView({behavior:'smooth'});}
+async function chatEnviar(e){e.preventDefault();let v=document.getElementById('chat-q').value;if(!v) return;let body=document.getElementById('chat-body');body.innerHTML+=`<div style="text-align:right;margin-bottom:10px"><span style="background:#229ED9;padding:10px 14px;border-radius:15px;display:inline-block;font-size:14px">${v}</span></div>`;document.getElementById('chat-q').value='';let clave=Object.keys(DATOS).find(k=>v.toLowerCase().includes(k));if(!clave){body.innerHTML+=`<div class="msg-bot">💡 Escribe: Piura, Cutervo, Catacaos, Chota...</div>`;return;}let d=DATOS[clave];body.innerHTML+=`<div class="msg-bot">⏳ Consultando ${d.nombre} en vivo...</div>`;try{let r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${d.lat}&longitude=${d.lon}&current=temperature_2m,precipitation,weather_code,wind_speed_10m&timezone=auto`);let j=await r.json();let c=j.current;body.innerHTML+=`<div class="msg-bot">📍 ${d.nombre}\n🌦️ Clima: ${c.temperature_2m}°C, Lluvia: ${c.precipitation} mm\n🚨 ${d.alerta}\n📍 Mapa: https://www.google.com/maps?q=${d.lat},${d.lon}</div>`;}catch{body.innerHTML+=`<div class="msg-bot">📍 ${d.nombre}\n🚨 ${d.alerta}</div>`;}}
+</script>
+</body>
+</html>
